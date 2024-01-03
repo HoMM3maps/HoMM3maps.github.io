@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HoMM3 Editor</title>
+  <style>
+    /* CSS styles */
+    /* Define a CSS class for controlling image size */
+    .mapImage {
+      width: 40%; /* Default size */
+      transition: width 0.3s ease-in-out; /* Add transition for smooth zoom effect */
+    }
+    .zoomed {
+      width: 65% !important; /* Zoomed size */
+    }
+    .submitMaps {
+      font-weight: bold;
+      color: #EAC15C; /* Adjusted color */
+    }
+    body {
+      background-color: #0E1F47; /* Adjusted background color */
+      color: #EAC15C; /* Adjusted text color */
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      text-align: left;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh; /* Height of the viewport */
+      position: relative; /* Position relative for positioning the log */
+    }
+    .outer-border {
+      border: 4px solid #EAC15C; /* Yellow border around the outer container */
+      background-color: #342110; /* Brown fill inside the outer border */
+      padding: 10px; /* Padding inside the outer border */
+      max-width: 80%; /* Limit the maximum width */
+      box-sizing: border-box; /* Include border and padding in the width calculation */
+      text-align: left; /* Center-align the content */
+      position: relative; /* Relative position */
+      z-index: 1; /* Set z-index to keep content above rectangle */
+    }
+    h1 {
+      color: #FDC22D; /* Title color */
+      text-align: left; /* Align text to the center */
+      margin-bottom: 20px; /* Space below the title */
+    }
+    a {
+      color: #FDC22D; /* Adjust hyperlink color */
+      text-decoration: none; /* Remove underline */
+    }
+    a:hover {
+      color: #FFEF83; /* Change color on hover */
+    }
+    #mapDetails {
+      display: none;
+    }
+    #mapTitle,
+    .submitMaps {
+      text-align: left; /* Align text to the left */
+    }
+    .stat {
+      color: #FDC22D; /* Yellow color for stats */
+    }
+    .update-log {
+      position: absolute; /* Position absolute for precise placement */
+      bottom: 10px; /* 10px from the bottom */
+      left: 10px; /* 10px from the left */
+      border: 4px solid #EAC15C; /* Yellow border */
+      border-radius: 0px; /* Rounded border */
+      width: 170px; /* Initial width for the log */
+      height: 50px; /* Height for the log */
+      overflow: hidden; /* Hide overflow */
+      transition: height 0.3s ease-in-out; /* Add transition effect */
+      background-color: rgba(52, 33, 16, 0.9); /* Background color for the log */
+      color: #FDC22D; /* Text color */
+      cursor: pointer; /* Change cursor on hover */
+    }
+    .update-log:hover {
+      height: 450px; /* Expanded height on hover */
+    }
+    .update-log h2 {
+      margin-top: 0; /* Reset margin-top */
+      text-align: center; /* Center-align the title */
+      border-bottom: 2px solid #EAC15C; /* Bottom border for the title */
+      padding-bottom: 5px; /* Padding below the title */
+    }
+    .update-log ul {
+      list-style-type: none; /* Remove bullet points */
+      padding-left: 0; /* Remove default padding */
+      overflow-y: auto; /* Add scrollbar */
+      max-height: 100%; /* Set max-height */
+      padding: 5px; /* Add padding */
+    }
+    .update-log li {
+      margin-bottom: 5px; /* Space between update log items */
+    }
+    /* Style for the rectangle */
+    .rectangle {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      height: 50px;
+      background-color: #342110;
+      border-bottom: 4px solid #EAC15C;
+      z-index: 999;
+    }
+    .button-container {
+      display: flex;
+      justify-content: flex-start;
+      padding: 10px;
+    }
+    .button-container button {
+      margin-right: 10px;
+      padding: 8px 16px;
+      border: 1px solid #FDC22D;
+      border-radius: 0;
+      background-color: #FDC22D;
+      color: #342110;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    .button-container button:hover {
+      background-color: #342110;
+      color: #FDC22D;
+    }
+    .button-container a {
+      margin-right: 10px;
+      padding: 6px 12px; /* Adjusted padding */
+      border: 1px solid #FDC22D;
+      border-radius: 0;
+      background-color: #FDC22D;
+      color: #342110;
+      font-weight: bold;
+      font-size: 13px; /* Adjusted font size */
+      text-decoration: none; /* Remove default underline */
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .button-container a:hover {
+      background-color: #342110;
+      color: #FDC22D;
+    }
+  </style>
+</head>
+<body>
+  <div class="rectangle">
+    <div class="button-container">
+      <button onclick="window.location.href='index.html'">Maps</button>
+      <button onclick="window.location.href='editor.html'">Editor</button>
+      <a href="https://www.buymeacoffee.com/argatuioan" target="_blank">Buy Me a Coffee</a>
+    </div>
+  </div>
+
+  <div class="outer-border">
+    <h1>Heroes of Might and Magic III Maps</h1>
+    
+    <label class="stat" for="mapSelect"><i>Select a map:</i></label>
+    <select id="mapSelect">
+      <option value="0"> Select a map</option>
+      <option value="1">Knee Deep in the Dead</option>
+      <option value="2">Good to Go</option>
+      <option value="3">More Maps Coming Soon!</option>
+    </select>
+
+    <div id="mapDetails">
+      <h2 id="mapTitle"></h2>
+      <p class="stat" id="mapDescription"></p>
+      <p class="submitMaps">You can also help by submitting maps to <a href='https://mail.google.com/mail/?view=cm&fs=1&to=homm3maps@gmail.com&su=Map%20Submission' target="_blank">homm3maps@gmail.com</a> or via <a href='https://discord.gg/BBF8ApYZ' target="_blank">Discord</a>!</p>
+    </div>
+  </div>
+
+  <div class="update-log">
+    <h2>Update Log</h2>
+    <ul>
+      <li>Version 1.0 - Initial release</li>
+      <li>Version 1.1 - Added Discord link and update log</li>
+      <li>Version 1.2 - Added menu tab </li>
+      <li>Version 1.3 - Added individual tile editor</li>
+      <!-- Add more update log items as needed -->
+    </ul>
+  </div>
+
+  <script src="scripts.js"></script>
+</body>
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Map Editor</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background-color: #0E1F47;
+      color: #EAC15C;
+      font-family: Arial, sans-serif;
+      position: relative;
+    }
+    canvas {
+      display: block;
+      z-index: 0;
+      position: relative;
+    }
+    .ribbon {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      height: 50px;
+      background-color: #342110;
+      border-bottom: 4px solid #EAC15C;
+      z-index: 2;
+    }
+    .button-container {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 3;
+    }
+    .menu {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 350px;
+      height: 100%;
+      background-color: #342110;
+      border-left: 4px solid #EAC15C;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    .menu-content {
+      color: #EAC15C;
+      margin-bottom: 20px;
+    }
+    .label-dropdown {
+      margin-top: 20px;
+    }
+    .label-dropdown select {
+      padding: 8px;
+      font-size: 14px;
+    }
+    .line {
+      border-bottom: 4px solid #EAC15C;
+      width: 170%; /* Adjust the width as needed */
+      margin: 10px 0;
+    }
+    .separator {
+      width: 100%; /* Adjust width as needed */
+      border: none;
+      border-top: 2px solid #EAC15C; /* Color and style of the line */
+      margin: 10px 0; /* Spacing around the line */
+    }
+    .additional-content {
+      width: 100%;
+      position: relative;
+    }
+    .additional-content div {
+      background-color: #342110; /* Color for the divs */
+      border: 4px solid #EAC15C; /* Border for the divs */
+      padding: 10px; /* Padding for the divs */
+    }
+    .button-container button,
+    .button-container a,
+    #clearHexButton,
+    #grassButton,
+    #sandButton {
+      margin-right: 10px;
+      padding: 8px 16px;
+      border: 1px solid #FDC22D;
+      border-radius: 0;
+      background-color: #FDC22D;
+      color: #342110;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+      text-decoration: none;
+      font-size: 14px;
+    }
+    .button-container button:hover,
+    .button-container a:hover,
+    #clearHexButton:hover,
+    #grassButton:hover,
+    #sandButton:hover {
+      background-color: #342110;
+      color: #FDC22D;
+    }
+    #clearHexButton {
+      margin-top: 2px;
+      margin-left: 0;
+      font-size: 14px;
+    }
+    .button-style {
+      margin-bottom: 10px;
+      margin-right: 10px;
+      padding: 8px 16px;
+      border: 1px solid #FDC22D;
+      border-radius: 0;
+      background-color: #FDC22D;
+      color: #342110;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+      font-size: 14px;
+    }
+    .button-style:hover {
+      background-color: #342110;
+      color: #FDC22D;
+    }
+  </style>
+</head>
+<body>
+  <div class="ribbon"></div>
+  
+  <div class="button-container">
+    <button onclick="window.location.href='index.html'">Maps</button>
+    <button onclick="window.location.href='grid.html'">Editor</button>
+    <a href="https://www.buymeacoffee.com/argatuioan" target="_blank">Buy Me a Coffee</a>
+  </div>
+
+  <div class="menu">
+    <div class="menu-content">
+      <!-- Content for the menu -->
+    </div>
+    <div class="label-dropdown">
+      <label for="tileType">Tiles:</label>
+      <select id="tileType">
+        <option value="selectTile">Select Tile Type</option>
+        <option value="castles">Castles</option>
+        <option value="mines">Mines</option>
+        <option value="terrain">Terrain</option>
+      </select>
+      <div class="line"></div>
+    </div>
+    <div class="additional-content">
+      <button id="clearHexButton" class="button-style" onclick="clearHex()">Clear Hex</button>
+      <button id="clearGridButton" class="button-style" onclick="clearGrid()">Clear Grid</button>
+      <hr class="separator" style="border-top: 4px solid #EAC15C; margin: 10px 0;">
+      <button id="grassButton" class="button-style" onclick="changeToGrass()">Grass</button>
+      <button id="sandButton" class="button-style" onclick="changeToSand()">Sand</button>
+      <button id="waterButton" class="button-style" onclick="changeToWater()">Water</button>
+      <button id="snowButton" class="button-style" onclick="changeToSnow()">Snow</button>
+    </div>
+    <div class="line2"></div>
+  </div>
+
+  <canvas id="mapCanvas"></canvas>
+  <script src="editor.js"></script>
+</body>
+</html>

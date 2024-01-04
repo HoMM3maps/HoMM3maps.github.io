@@ -5,6 +5,8 @@ const lineWidth = 2;
 const backgroundImage = new Image();
 backgroundImage.src = "fog_of_war.png";
 
+
+//Terrain
 const grassImg = new Image();
 grassImg.src = 'hex_grass.png';
 
@@ -31,6 +33,28 @@ roughImg.src = 'hex_rough.png';
 
 const subterrareanImg = new Image();
 subterrareanImg.src = 'hex_subterranean.png';
+
+//Castles
+const necroImg = new Image();
+necroImg.src = 'hex_necro.png';
+
+const towerImg = new Image();
+towerImg.src = 'hex_tower.png';
+
+const castleImg = new Image();
+castleImg.src = 'hex_castle.png';
+
+const dungeonImg = new Image();
+dungeonImg.src = 'hex_dungeon.png';
+
+const fortressImg = new Image();
+fortressImg.src = 'hex_fortress.png';
+
+const infernoImg = new Image();
+infernoImg.src = 'hex_inferno.png';
+
+const rampartImg = new Image();
+rampartImg.src = 'hex_rampart.png';
 
 let horizontalSpacing = -10;
 let verticalSpacing = -10;
@@ -62,6 +86,7 @@ function drawHexWithImage(x, y, radius, image) {
 }
 
 const stateImages = {
+  //Terrain
   grass: grassImg,
   sand: sandImg,
   water: waterImg,
@@ -71,7 +96,14 @@ const stateImages = {
   dirt: dirtImg,
   rough: roughImg,
   subterrarean: subterrareanImg,
-  // Add more states and corresponding image variables here
+  //Castles
+  necro: necroImg,
+  tower: towerImg,
+  castle: castleImg,
+  dungeon: dungeonImg,
+  fortress: fortressImg,
+  inferno: infernoImg,
+  rampart: rampartImg,
 };
 
 function drawHexWithStateImage(x, y, radius, state, highlight = false) {
@@ -190,6 +222,7 @@ function clearHighlight() {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
+  //Terrain
   const grassButton = document.getElementById('grassButton');
   const sandButton = document.getElementById('sandButton');
   grassButton.style.display = 'none';
@@ -208,6 +241,21 @@ window.addEventListener('DOMContentLoaded', () => {
   roughButton.style.display = 'none';
   const subterrareanButton = document.getElementById('subterrareanButton');
   subterrareanButton.style.display = 'none'; 
+  //Castles
+  const necroButton = document.getElementById('necroButton');
+  necroButton.style.display = 'none'; 
+  const towerButton = document.getElementById('towerButton');
+  towerButton.style.display = 'none'; 
+  const castleButton = document.getElementById('castleButton');
+  castleButton.style.display = 'none'; 
+  const dungeonButton = document.getElementById('dungeonButton');
+  dungeonButton.style.display = 'none'; 
+  const fortressButton = document.getElementById('fortressButton');
+  fortressButton.style.display = 'none'; 
+  const infernoButton = document.getElementById('infernoButton');
+  infernoButton.style.display = 'none';
+  const rampartButton = document.getElementById('rampartButton');
+  rampartButton.style.display = 'none'; 
 
   grassButton.addEventListener('click', () => {
       currentState = 'grass';
@@ -246,6 +294,35 @@ subterrareanButton.addEventListener('click', () => {
   currentState = 'subterrarean';
 });
 
+//Castles
+necroButton.addEventListener('click', () => {
+  currentState = 'necro';
+});
+
+towerButton.addEventListener('click', () => {
+  currentState = 'tower';
+});
+
+castleButton.addEventListener('click', () => {
+  currentState = 'castle';
+});
+
+dungeonButton.addEventListener('click', () => {
+  currentState = 'dungeon';
+});
+
+fortressButton.addEventListener('click', () => {
+  currentState = 'fortress';
+});
+
+infernoButton.addEventListener('click', () => {
+  currentState = 'inferno';
+});
+
+rampartButton.addEventListener('click', () => {
+  currentState = 'rampart';
+});
+
 function toggleTerrainButtons(visible) {
   const grassButton = document.getElementById('grassButton');
   const sandButton = document.getElementById('sandButton');
@@ -261,29 +338,44 @@ window.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById('tileType').addEventListener('change', (event) => {
     const selectedTile = event.target.value;
-    if (selectedTile === 'terrain') {
-      grassButton.style.display = 'inline-block';
-      sandButton.style.display = 'inline-block';
-      waterButton.style.display = 'inline-block';
-      snowButton.style.display = 'inline-block';
-      swampButton.style.display = 'inline-block';
-      lavaButton.style.display = 'inline-block';
-      dirtButton.style.display = 'inline-block';
-      roughButton.style.display = 'inline-block';
-      subterrareanButton.style.display = 'inline-block';
+    const terrainButtons = ['grassButton', 'sandButton', 'waterButton', 'snowButton', 'swampButton', 'lavaButton', 'dirtButton', 'roughButton', 'subterrareanButton'];
+    const necroButton = document.getElementById('necroButton');
+    const towerButton = document.getElementById('towerButton');
+    const castleButton = document.getElementById('castleButton');
+    const dungeonButton = document.getElementById('dungeonButton');
+    const fortressButton = document.getElementById('fortressButton');
+    const infernoButton = document.getElementById('infernoButton');
+    const rampartButton = document.getElementById('rampartButton');
+  
+    if (selectedTile === 'castles') {
+      terrainButtons.forEach(buttonId => {
+        document.getElementById(buttonId).style.display = 'none'; // Hide terrain buttons
+      });
+      necroButton.style.display = 'inline-block'; 
+      towerButton.style.display = 'inline-block'; 
+      castleButton.style.display = 'inline-block'; 
+      dungeonButton.style.display = 'inline-block'; 
+      fortressButton.style.display = 'inline-block'; 
+      infernoButton.style.display = 'inline-block'; 
+      rampartButton.style.display = 'inline-block'; 
+    } else if (selectedTile === 'terrain') {
+      terrainButtons.forEach(buttonId => {
+        document.getElementById(buttonId).style.display = 'inline-block'; // Show terrain buttons
+      });
+      necroButton.style.display = 'none'; 
+      towerButton.style.display = 'none'; 
+      castleButton.style.display = 'none';
+      dungeonButton.style.display = 'none'; 
+      fortressButton.style.display = 'none'; 
+      infernoButton.style.display = 'none'; 
+      rampartButton.style.display = 'none'; 
     } else {
-      grassButton.style.display = 'none';
-      sandButton.style.display = 'none';
-      waterButton.style.display = 'none';
-      snowButton.style.display = 'none';
-      swampButton.style.display = 'none';
-      lavaButton.style.display = 'none';
-      dirtButton.style.display = 'none';
-      roughButton.style.display = 'none';
-      subterrareanButton.style.display = 'none';
+      terrainButtons.forEach(buttonId => {
+        document.getElementById(buttonId).style.display = 'none'; 
+      });
     }
   });
-
+  
   grassButton.addEventListener('click', () => {
     currentState = 'grass';
   });
@@ -366,7 +458,35 @@ function changeToRough() {
 }
 
 function changeToSubterrarean() {
-  currentState = 'subterarrean';
+  currentState = 'subterrarean';
+}
+
+function changeToNecro() {
+  currentState = 'necro';
+}
+
+function changeToTower() {
+  currentState = 'tower';
+}
+
+function changeToCastle() {
+  currentState = 'castle';
+}
+
+function changeToDungeon() {
+  currentState = 'dungeon';
+}
+
+function changeToFortress() {
+  currentState = 'fortress';
+}
+
+function changeToInferno() {
+  currentState = 'inferno';
+}
+
+function changeToRampart() {
+  currentState = 'rampart';
 }
 
 function clearHex() {

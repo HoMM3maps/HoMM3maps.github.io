@@ -1,6 +1,6 @@
 const canvas = document.getElementById('mapCanvas');
 const ctx = canvas.getContext('2d');
-const hexRadius = 60;
+const hexRadius = 40;
 const lineWidth = 2;
 const backgroundImage = new Image();
 backgroundImage.src = "fog_of_war.png";
@@ -17,9 +17,24 @@ waterImg.src = 'hex_water.png';
 const snowImg = new Image();
 snowImg.src = 'hex_snow.png';
 
-let horizontalSpacing = -16;
-let verticalSpacing = -14;
-let rowOffset = 51;
+const swampImg = new Image();
+swampImg.src = 'hex_swamp.png';
+
+const lavaImg = new Image();
+lavaImg.src = 'hex_lava.png';
+
+const dirtImg = new Image();
+dirtImg.src = 'hex_dirt.png';
+
+const roughImg = new Image();
+roughImg.src = 'hex_rough.png';
+
+const subterrareanImg = new Image();
+subterrareanImg.src = 'hex_subterranean.png';
+
+let horizontalSpacing = -10;
+let verticalSpacing = -10;
+let rowOffset = 37;
 let hexagons = [];
 
 backgroundImage.onload = function () {
@@ -46,7 +61,20 @@ function drawHexWithImage(x, y, radius, image) {
   ctx.drawImage(image, x - radius, y - radius, radius * 2, radius * 2);
 }
 
-function drawHex(x, y, radius, state, highlight = false) {
+const stateImages = {
+  grass: grassImg,
+  sand: sandImg,
+  water: waterImg,
+  snow: snowImg,
+  swamp: swampImg,
+  lava: lavaImg,
+  dirt: dirtImg,
+  rough: roughImg,
+  subterrarean: subterrareanImg,
+  // Add more states and corresponding image variables here
+};
+
+function drawHexWithStateImage(x, y, radius, state, highlight = false) {
   ctx.beginPath();
   for (let i = 0; i < 6; i++) {
     const angle = Math.PI / 3 * i + Math.PI / 6;
@@ -56,36 +84,21 @@ function drawHex(x, y, radius, state, highlight = false) {
   }
   ctx.closePath();
 
-  const pattern = ctx.createPattern(backgroundImage, 'repeat');
-  ctx.fillStyle = pattern;
-  ctx.fill();
-
-  if (state === 'grass') {
-    drawHexWithImage(x, y, hexRadius, grassImg);
-  } else if (state === 'sand') {
-    drawHexWithImage(x, y, hexRadius, sandImg);
-  } else if (state === 'water') {
-    drawHexWithImage(x, y, hexRadius, waterImg); 
-  } else if (state === 'snow') {
-    drawHexWithImage(x, y, hexRadius, snowImg); 
-  }
-
   if (highlight) {
     ctx.save();
-    ctx.beginPath();
-    for (let i = 0; i < 6; i++) {
-      const angle = Math.PI / 3 * i + Math.PI / 6;
-      const hx = x + radius * Math.cos(angle);
-      const hy = y + radius * Math.sin(angle);
-      ctx.lineTo(hx, hy);
-    }
-    ctx.closePath();
-
     ctx.strokeStyle = '#e6b02e';
     ctx.lineWidth = 2;
     ctx.stroke();
     ctx.restore();
   } else {
+    const pattern = ctx.createPattern(backgroundImage, 'repeat');
+    ctx.fillStyle = pattern;
+    ctx.fill();
+
+    if (stateImages[state]) {
+      drawHexWithImage(x, y, radius, stateImages[state]);
+    }
+
     ctx.beginPath();
     for (let i = 0; i < 6; i++) {
       const angle = Math.PI / 3 * i + Math.PI / 6;
@@ -100,6 +113,7 @@ function drawHex(x, y, radius, state, highlight = false) {
     ctx.stroke();
   }
 }
+
 
 function initializeHexGrid(rows, cols) {
   const savedHexagons = localStorage.getItem('hexagons');
@@ -125,7 +139,7 @@ function redraw() {
 
   for (let i = 0; i < hexagons.length; i++) {
     let hex = hexagons[i];
-    drawHex(hex.x, hex.y, hex.radius, hex.state);
+    drawHexWithStateImage(hex.x, hex.y, hex.radius, hex.state);
   }
 }
 
@@ -184,20 +198,19 @@ window.addEventListener('DOMContentLoaded', () => {
   waterButton.style.display = 'none'; 
   const snowButton = document.getElementById('snowButton');
   snowButton.style.display = 'none'; 
-
-  document.getElementById('tileType').addEventListener('change', (event) => {
-    const selectedTile = event.target.value;
-    if (selectedTile === 'terrain') {
-      grassButton.style.display = 'inline-block';
-      sandButton.style.display = 'inline-block';
-    } else {
-      grassButton.style.display = 'none';
-      sandButton.style.display = 'none';
-    }
-  });
+  const swampButton = document.getElementById('swampButton');
+  swampButton.style.display = 'none'; 
+  const lavaButton = document.getElementById('lavaButton');
+  lavaButton.style.display = 'none'; 
+  const dirtButton = document.getElementById('dirtButton');
+  dirtButton.style.display = 'none'; 
+  const roughButton = document.getElementById('roughButton');
+  roughButton.style.display = 'none';
+  const subterrareanButton = document.getElementById('subterrareanButton');
+  subterrareanButton.style.display = 'none'; 
 
   grassButton.addEventListener('click', () => {
-    currentState = 'grass';
+      currentState = 'grass';
   });
 
   sandButton.addEventListener('click', () => {
@@ -211,6 +224,26 @@ waterButton.addEventListener('click', () => {
 
 snowButton.addEventListener('click', () => {
   currentState = 'snow';
+});
+
+swampButton.addEventListener('click', () => {
+  currentState = 'swamp';
+});
+
+lavaButton.addEventListener('click', () => {
+  currentState = 'lava';
+});
+
+dirtButton.addEventListener('click', () => {
+  currentState = 'dirt';
+});
+
+roughButton.addEventListener('click', () => {
+  currentState = 'rough';
+});
+
+subterrareanButton.addEventListener('click', () => {
+  currentState = 'subterrarean';
 });
 
 function toggleTerrainButtons(visible) {
@@ -233,11 +266,21 @@ window.addEventListener('DOMContentLoaded', () => {
       sandButton.style.display = 'inline-block';
       waterButton.style.display = 'inline-block';
       snowButton.style.display = 'inline-block';
+      swampButton.style.display = 'inline-block';
+      lavaButton.style.display = 'inline-block';
+      dirtButton.style.display = 'inline-block';
+      roughButton.style.display = 'inline-block';
+      subterrareanButton.style.display = 'inline-block';
     } else {
       grassButton.style.display = 'none';
       sandButton.style.display = 'none';
       waterButton.style.display = 'none';
       snowButton.style.display = 'none';
+      swampButton.style.display = 'none';
+      lavaButton.style.display = 'none';
+      dirtButton.style.display = 'none';
+      roughButton.style.display = 'none';
+      subterrareanButton.style.display = 'none';
     }
   });
 
@@ -306,6 +349,26 @@ function changeToSnow() {
   currentState = 'snow';
 }
 
+function changeToSwamp() {
+  currentState = 'swamp';
+}
+
+function changeToLava() {
+  currentState = 'lava';
+}
+
+function changeToDirt() {
+  currentState = 'dirt';
+}
+
+function changeToRough() {
+  currentState = 'rough';
+}
+
+function changeToSubterrarean() {
+  currentState = 'subterarrean';
+}
+
 function clearHex() {
   currentState = 'empty';
   redraw();
@@ -332,9 +395,8 @@ function handleMouseHover(event) {
     let hex = hexagons[i];
     const distance = Math.sqrt(Math.pow(mouseX - hex.x, 2) + Math.pow(mouseY - hex.y, 2));
     if (distance <= hex.radius) {
-      drawHex(hex.x, hex.y, hex.radius, hex.state, true);
+      drawHexWithStateImage(hex.x, hex.y, hex.radius, hex.state, true);
       break;
     }
   }
 }
-
